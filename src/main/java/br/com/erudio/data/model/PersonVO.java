@@ -1,4 +1,4 @@
-package br.com.erudio.model;
+package br.com.erudio.data.model;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="person")
-public class Person implements Serializable {
+public class PersonVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -31,7 +31,7 @@ public class Person implements Serializable {
 	@Column(nullable = false, length = 1)
 	private String gender;
 	
-	public Person() {
+	public PersonVO() {
 		
 	}
 
@@ -95,7 +95,7 @@ public class Person implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Person other = (Person) obj;
+		PersonVO other = (PersonVO) obj;
 		if (address == null) {
 			if (other.address != null)
 				return false;

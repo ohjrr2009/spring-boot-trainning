@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.erudio.data.model.PersonVO;
 import br.com.erudio.exception.ResourceNotFoundException;
-import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonRepository;
 
 @Service
@@ -18,12 +18,12 @@ public class PersonServices {
 
 	private final AtomicLong counter = new AtomicLong();
 
-	public Person create(Person person) {
+	public PersonVO create(PersonVO person) {
 		return repository.save(person);
 	}
 
-	public Person update(Person person) {
-		Person entity = repository.findById(person.getId())
+	public PersonVO update(PersonVO person) {
+		PersonVO entity = repository.findById(person.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
 
 		entity.setFirstName(person.getFirstName());
@@ -35,24 +35,24 @@ public class PersonServices {
 	}
 
 	public void delete(Long id) {
-		Person entity = repository.findById(id)
+		PersonVO entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
 		repository.delete(entity);
 	}
 
-	public Person findById(Long id) {
+	public PersonVO findById(Long id) {
 		return repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
 		// estudar Callbacks no Java --->>> () -> new ResourceNotFoundException("No
 		// records found with this ID")
 	}
 
-	public List<Person> findAll() {
+	public List<PersonVO> findAll() {
 		return repository.findAll();
 	}
 
-	private Person mockPerson(int i) {
-		Person person = new Person();
+	private PersonVO mockPerson(int i) {
+		PersonVO person = new PersonVO();
 		person.setId(counter.incrementAndGet());
 		person.setFirstName("Person Name" + i);
 		person.setLastName("Last Name" + i);
