@@ -6,7 +6,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.erudio.data.model.PersonVO;
+import br.com.erudio.converter.DozerConverter;
+import br.com.erudio.data.model.Person;
+import br.com.erudio.data.vo.PersonVO;
 import br.com.erudio.exception.ResourceNotFoundException;
 import br.com.erudio.repository.PersonRepository;
 
@@ -19,7 +21,9 @@ public class PersonServices {
 	private final AtomicLong counter = new AtomicLong();
 
 	public PersonVO create(PersonVO person) {
-		return repository.save(person);
+		var entity = DozerConverter.parseObject(person, Person.class);
+		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+		return vo;
 	}
 
 	public PersonVO update(PersonVO person) {
@@ -41,14 +45,15 @@ public class PersonServices {
 	}
 
 	public PersonVO findById(Long id) {
-		return repository.findById(id)
+		var entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
 		// estudar Callbacks no Java --->>> () -> new ResourceNotFoundException("No
 		// records found with this ID")
+		
 	}
 
 	public List<PersonVO> findAll() {
-		return repository.findAll();
+		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
 	}
 
 	private PersonVO mockPerson(int i) {
