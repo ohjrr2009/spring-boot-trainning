@@ -25,45 +25,35 @@ public class PersonServices {
 		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
 		return vo;
 	}
+	
+	public List<PersonVO> findAll() {
+		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
+	}
+	
+	public PersonVO findById(Long id) {
+		var entity = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
+		// estudar Callbacks no Java --->>> () -> new ResourceNotFoundException("No
+		// records found with this ID")
+		return DozerConverter.parseObject(entity, PersonVO.class);
+	}
 
 	public PersonVO update(PersonVO person) {
-		PersonVO entity = repository.findById(person.getId())
+		var entity = repository.findById(person.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
 
 		entity.setFirstName(person.getFirstName());
 		entity.setLastName(person.getLastName());
 		entity.setAddress(person.getAddress());
 		entity.setGender(person.getGender());
-
-		return repository.save(entity);
+		
+		var vo = DozerConverter.parseObject(entity, PersonVO.class);
+		return vo;
 	}
 
 	public void delete(Long id) {
-		PersonVO entity = repository.findById(id)
+		var entity = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
 		repository.delete(entity);
 	}
-
-	public PersonVO findById(Long id) {
-		var entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No records found with this ID"));
-		// estudar Callbacks no Java --->>> () -> new ResourceNotFoundException("No
-		// records found with this ID")
-		
-	}
-
-	public List<PersonVO> findAll() {
-		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
-	}
-
-	private PersonVO mockPerson(int i) {
-		PersonVO person = new PersonVO();
-		person.setId(counter.incrementAndGet());
-		person.setFirstName("Person Name" + i);
-		person.setLastName("Last Name" + i);
-		person.setAddress("Some Address" + i);
-		person.setGender("M");
-		return person;
-	}
-
 }
