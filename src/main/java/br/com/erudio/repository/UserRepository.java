@@ -12,7 +12,7 @@ import br.com.erudio.data.model.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	//usando JPQL
-	@Query("SELECT u FROM User u WHERE u.userName =: userName")
-	User findByUsername(@Param("userName") String userName);
+	@Query("SELECT u FROM User u WHERE u.userName = :username")
+	User findByUsername(@Param("username") String username);
 
 }
