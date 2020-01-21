@@ -1,43 +1,35 @@
-package br.com.erudio.data.vo;
+package br.com.erudio.data.vo.v2;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.dozermapper.core.Mapping;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.springframework.hateoas.RepresentationModel;
-
-@JsonPropertyOrder({"id", "address", "firstName", "last_name", "gender"})
-public class PersonVO extends RepresentationModel implements Serializable {
+public class PersonVOV2 implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Mapping("id")
-	@JsonProperty("id")
-	private long key;
-	
+	private long id;
 	private String firstName;
-	
-	@JsonProperty("last_name") //muda o nome do campo na renderização
 	private String lastName;
-	
 	private String address;
-	
-	@JsonIgnore //ignora a rendereição do campo
 	private String gender;
+	private Date birthday;
 	
-	public PersonVO() {
+	public PersonVOV2() {
 		
 	}
 
-	public long getKey() {
-		return key;
+	public long getId() {
+		return id;
 	}
 
-	public void setKey(long key) {
-		this.key = key;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -71,15 +63,24 @@ public class PersonVO extends RepresentationModel implements Serializable {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-		result = prime * result + (int) (key ^ (key >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
@@ -92,11 +93,16 @@ public class PersonVO extends RepresentationModel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PersonVO other = (PersonVO) obj;
+		PersonVOV2 other = (PersonVOV2) obj;
 		if (address == null) {
 			if (other.address != null)
 				return false;
 		} else if (!address.equals(other.address))
+			return false;
+		if (birthday == null) {
+			if (other.birthday != null)
+				return false;
+		} else if (!birthday.equals(other.birthday))
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
@@ -108,7 +114,7 @@ public class PersonVO extends RepresentationModel implements Serializable {
 				return false;
 		} else if (!gender.equals(other.gender))
 			return false;
-		if (key != other.key)
+		if (id != other.id)
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
@@ -117,6 +123,4 @@ public class PersonVO extends RepresentationModel implements Serializable {
 			return false;
 		return true;
 	}
-
-	
 }
